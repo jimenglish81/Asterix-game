@@ -15,7 +15,13 @@ body {
 </head>
 <body>
 <canvas id="plot"></canvas>
-<!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script> -->
+<ul>
+	<li>left arrow - walk left</li>
+	<li>right arrow - walk right</li>
+	<li>spacebar - punch</li>
+	<li>down arrow - crouch</li>
+</ul>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 <script src="../js/timer.js"></script>
 <script src="../js/sprite.js"></script>
 <script src="../js/animation.js"></script>
@@ -33,7 +39,9 @@ var asterix = new Sprite(26, 32,[
 	{ name: 'walk_6', x: 145, y: 5 },
 	{ name: 'punch_1', x: 163, y: 50 },
 	{ name: 'punch_2', x: 211, y: 50 },
-	{ name: 'punch_3', x: 249, y: 47 }
+	{ name: 'punch_3', x: 249, y: 47 },
+	{ name: 'jump_1', x: 11, y: 100 },
+	{ name: 'jump_2', x: 47, y: 98 }
 ]);
 
 var animation = new Animation([
@@ -45,7 +53,19 @@ var animation = new Animation([
 	{ sprite: 'walk_6', time: 0.15 }
 ], asterix);
 
-var game = new Game('plot', timer, animation);
+
+var punchAnimation = new Animation([
+    { sprite: 'punch_1', time: 0.15 },
+    { sprite: 'punch_2', time: 0.15 },
+	{ sprite: 'punch_3', time: 0.15 }
+], asterix, true);
+
+var jumpAnimation = new Animation([
+    { sprite: 'jump_1', time: 0.15 },
+    { sprite: 'jump_2', time: 0.15 }
+], asterix, true);
+
+var game = new Game('plot', timer, animation, punchAnimation, jumpAnimation);
 </script>
 </body>
 </html>
