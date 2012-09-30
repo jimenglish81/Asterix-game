@@ -6,7 +6,8 @@ function Game(id, timer, animation, punchAnimation, jumpAnimation) {
 	this._punchAnimation = punchAnimation;
 	this._jumpAnimation = jumpAnimation;
 	this._dirX = 0;
-	this._dirY = 180;
+	this._dirY = 181;
+	this._bgX = -40;
 	
 	this._initialiseDom(id);
 	this._initialiseEvents();
@@ -24,7 +25,7 @@ Game.prototype._initialiseDom = function(id) {
 	this._canvas.height = 223;
 	this._canvas.width = 256;
 	
-	this._bg.src = '../img/002.png';
+	this._bg.src = '../img/gaulishvillage.png';
 	this._img.src = '../img/asterix.gif';
 	this._bg.onload = function() {
 		this.loop();
@@ -76,7 +77,11 @@ Game.prototype._initialiseEvents = function() {
 	          this.stopped = true;
 	          break;
 	        case 38: // up
-	          this.jump = true;
+			  if (!this.falling) {
+	          	this.jumping = true;
+			  	this.falling = false;
+				this._force = 2;
+		  	  }
 	          break;
 	        case 40: // down
 			  this.crouch = false;
@@ -90,8 +95,7 @@ Game.prototype._initialiseEvents = function() {
 
 Game.prototype.loop = function() {
 	var special, dir;
-	this._context.clearRect(0, 0, 800, 300);
-	this._context.drawImage(this._bg, 0, 0, 256, 223);
+	this._context.clearRect(0, 0, 300, 300);
 	
 	if (this.punch) {
 		currentFrame = this._punchAnimation.getSprite();
@@ -103,32 +107,77 @@ Game.prototype.loop = function() {
 			this._punchAnimation.reset();
 			this._animation.reset();
 		}
-	} else if (this.crouch) {
+	} else if (this.crouch && !this.falling && !this.jumping) {
 		this._animation.reset();
 		currentFrame = {
-			x: 111,
-			y: 51
+			x: 153,
+			y: 155
 		};
 	} else if (!this.stopped) {
 		currentFrame = this._animation.getSprite();
 		this._animation.animate(this._timer.getSeconds());
 		this._timer.tick();
-		this._dirX = this.left ? this._dirX - 1 : this._dirX + 1;
-	} else {
+		this._dirX = this.left ? this._dirX - 0.4 : this._dirX + 0.4;
+	} else if (!this.jumping && !this.falling) {
 		this._animation.reset();
 		currentFrame = {
 			x: 9,
 			y: 50
 		};
 	}
+	
+	if (this.jumping) {
+		this._force = (this._force * 0.975);
+		this._dirY -= this._force;
+		currentFrame = {
+			x: 11,
+			y: 100
+		};
+	}
+	
+	if (this._dirY < 150) {
+		this.jumping = false;
+		this.falling = true;
+		this._force = 1;
+	}
+	
+	if (this.falling) {
+		this._force = (this._force * 1.025);
+		this._dirY += (this._force);
+		currentFrame = {
+			x: 47,
+			y: 98
+		};
+	}
+	
+	if (this._dirY >= 181) {
+		this.falling = false;
+		this._dirY = 181;
+	}
+	
+	// collision detection
+	this._dirX = Math.max(Math.min(this._dirX , 230), 26);
+	
+	  if (!this.left && !this.stopped) {
+		this._bgX -= 1;
+	  } else if (this.left  && !this.stopped) {
+		this._bgX += 1;
+	  }
+	
+	this._bgX = Math.max(Math.min(-40, this._bgX), -1366);
+	
+	this._context.drawImage(this._bg, 0, 0, 1660, 223, this._bgX, 0, 1660, 223);
+	
 	this._context.fill();
 	this._context.save();
+	
 	if(this.left) {
 	  this._context.scale(-1, 1);
 	  dir = (this._dirX * -1);
 	} else {
 	  dir = this._dirX;
 	}
+	
 	this._context.drawImage(this._img, currentFrame.x, currentFrame.y, 26, 32, dir, this._dirY, 26, 32);
 	this._context.restore();
 
