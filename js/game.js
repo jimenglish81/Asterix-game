@@ -40,15 +40,15 @@ Game.prototype._initialiseEvents = function() {
 	      switch ( key ) {
 	        case 37: // left
 			if (!this.left) {
-				this._dirX += 26;
-			}
+						this._dirX += 26;
+					}
 		    this.left = true;
 			this.stopped = false;
 	          break;
 	        case 39: // right
 			if (this.left) {
-				this._dirX -= 26;
-			}
+					this._dirX -= 26;
+				}
 		      this.left = false;
 			  this.stopped = false;
 	          break;
@@ -97,17 +97,9 @@ Game.prototype.loop = function() {
 	var special, dir;
 	this._context.clearRect(0, 0, 300, 300);
 	
-	if (this.punch) {
-		currentFrame = this._punchAnimation.getSprite();
-		special = this._punchAnimation.animate(this._timer.getSeconds());
-		this.punch = !!special;
-		this._timer.tick();
-		
-		if (!special) {
-			this._punchAnimation.reset();
-			this._animation.reset();
-		}
-	} else if (this.crouch && !this.falling && !this.jumping) {
+
+	
+	if (this.crouch && !this.falling && !this.jumping) {
 		this._animation.reset();
 		currentFrame = {
 			x: 153,
@@ -134,6 +126,7 @@ Game.prototype.loop = function() {
 			y: 100
 		};
 	}
+
 	
 	if (this._dirY < 150) {
 		this.jumping = false;
@@ -149,7 +142,20 @@ Game.prototype.loop = function() {
 			y: 98
 		};
 	}
+
 	
+	if (this.punch) {
+		currentFrame = this._punchAnimation.getSprite();
+		special = this._punchAnimation.animate(this._timer.getSeconds());
+		this.punch = !!special;
+		this._timer.tick();
+		
+		if (!special) {
+			this._punchAnimation.reset();
+			this._animation.reset();
+		}
+	}
+		
 	if (this._dirY >= 181) {
 		this.falling = false;
 		this._dirY = 181;
