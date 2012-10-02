@@ -31,6 +31,11 @@ body {
 var timer = new Timer();
 timer.tick();
 
+var timer2 = new Timer();
+timer2.tick();
+
+var level = "___________*_______";
+
 var asterix = new Sprite(26, 32,[
 	{ name: 'walk_1', x: 177, y: 5 },
 	{ name: 'walk_2', x: 10, y: 5 },
@@ -43,6 +48,12 @@ var asterix = new Sprite(26, 32,[
 	{ name: 'punch_3', x: 249, y: 47 },
 	{ name: 'jump_1', x: 11, y: 100 },
 	{ name: 'jump_2', x: 47, y: 98 }
+]);
+
+var roman = new Sprite(30, 46,[
+	{ name: 'walk_1', x: 75, y: 2 },
+	{ name: 'walk_2', x: 116, y: 0 },
+	{ name: 'walk_3', x: 155, y: 2 }
 ]);
 
 var animation = new Animation([
@@ -66,7 +77,13 @@ var jumpAnimation = new Animation([
     { sprite: 'jump_2', time: 0.15 }
 ], asterix, true);
 
-var game = new Game('plot', timer, animation, punchAnimation, jumpAnimation);
+var romanAnimation = new Animation([
+    { sprite: 'walk_1', time: 0.15 },
+    { sprite: 'walk_2', time: 0.15 },
+    { sprite: 'walk_3', time: 0.15 }
+], roman);
+
+var game = new Game('plot', timer, animation, punchAnimation, jumpAnimation, romanAnimation, timer2);
 </script>
 </body>
 </html>
