@@ -6,6 +6,7 @@
 <style type="text/css">
 body {
 	margin: 10px;
+	font-family: Lucida Console, Monaco5, monospace;
 }
 #plot {
 	border: 1px solid black;
@@ -14,76 +15,48 @@ body {
 </style>
 </head>
 <body>
-<canvas id="plot"></canvas>
+<canvas id="plot" width="256" height="223"></canvas>
 <ul>
 	<li>left arrow - walk left</li>
 	<li>right arrow - walk right</li>
-	<li>spacebar - punch</li>
+	<li>spacebar - punch / start</li>
 	<li>down arrow - crouch</li>
 	<li>up arrow - jump</li>
+	<li>p - pause</li>
 </ul>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script src="../js/util.js"></script>
 <script src="../js/timer.js"></script>
 <script src="../js/sprite.js"></script>
 <script src="../js/animation.js"></script>
+<script src="../js/piece.js"></script>
+<script src="../js/asterix.js"></script>
+<script src="../js/dogmatix.js"></script>
+<script src="../js/roman.js"></script>
+<script src="../js/fatroman.js"></script>
+<script src="../js/bird.js"></script>
+<script src="../js/rock.js"></script>
 <script src="../js/game.js"></script>
 <script>
-var timer = new Timer();
-timer.tick();
-
-var timer2 = new Timer();
-timer2.tick();
-
-var level = "___________*_______";
-
-var asterix = new Sprite(26, 32,[
-	{ name: 'walk_1', x: 177, y: 5 },
-	{ name: 'walk_2', x: 10, y: 5 },
-	{ name: 'walk_3', x: 44, y: 5 },
-	{ name: 'walk_4', x: 78, y: 5 },
-	{ name: 'walk_5', x: 109, y: 5 },
-	{ name: 'walk_6', x: 145, y: 5 },
-	{ name: 'punch_1', x: 163, y: 50 },
-	{ name: 'punch_2', x: 211, y: 50 },
-	{ name: 'punch_3', x: 249, y: 47 },
-	{ name: 'jump_1', x: 11, y: 100 },
-	{ name: 'jump_2', x: 47, y: 98 }
-]);
-
-var roman = new Sprite(30, 46,[
-	{ name: 'walk_1', x: 75, y: 2 },
-	{ name: 'walk_2', x: 116, y: 0 },
-	{ name: 'walk_3', x: 155, y: 2 }
-]);
-
-var animation = new Animation([
-    { sprite: 'walk_1', time: 0.15 },
-    { sprite: 'walk_2', time: 0.15 },
-	{ sprite: 'walk_3', time: 0.15 },
-	{ sprite: 'walk_4', time: 0.15 },
-	{ sprite: 'walk_5', time: 0.15 },
-	{ sprite: 'walk_6', time: 0.15 }
-], asterix);
-
-
-var punchAnimation = new Animation([
-    { sprite: 'punch_1', time: 0.15 },
-    { sprite: 'punch_2', time: 0.15 },
-	{ sprite: 'punch_3', time: 0.15 }
-], asterix, true);
-
-var jumpAnimation = new Animation([
-    { sprite: 'jump_1', time: 0.15 },
-    { sprite: 'jump_2', time: 0.15 }
-], asterix, true);
-
-var romanAnimation = new Animation([
-    { sprite: 'walk_1', time: 0.15 },
-    { sprite: 'walk_2', time: 0.15 },
-    { sprite: 'walk_3', time: 0.15 }
-], roman);
-
-var game = new Game('plot', timer, animation, punchAnimation, jumpAnimation, romanAnimation, timer2);
+var asterix = new JE.Asterix();
+var dogmatix = new JE.Dogmatix();
+var game = new JE.Game('#plot', asterix)
+	.withEnemies([
+		{constructor: JE.Roman, x: 530, y: 168},
+		{constructor: JE.Roman, x: 660, y: 168},
+		{constructor: JE.Roman, x: 760, y: 168},
+		{constructor: JE.FatRoman, x: 890, y: 168},
+		{constructor: JE.FatRoman, x: 1290, y: 168},
+		{constructor: JE.FatRoman, x: 1490, y: 168}
+	])
+	.withExtras([
+		{constructor: JE.Bird, x: 630, y: 20},
+		{constructor: JE.Bird, x: 1330, y: 20},
+		{constructor: JE.Rock, x: 1150, y: 170},
+		{constructor: JE.Rock, x: 1450, y: 170}
+	])
+	.withHeroShadow(dogmatix)
+	.initialise();
 </script>
 </body>
 </html>
