@@ -1,0 +1,22 @@
+@font-face {
+	font-family: obelix;
+	src: url('obelixpro.ttf');
+}
+body {
+	margin: 10px;
+	font-family: obelix, Lucida Console, Monaco5, monospace;
+	font-size: 13px;
+	background-color: #f8f8ff;
+	color: #c04000;
+}
+#plot {
+	border: 1px solid #555;
+}
+#wrapper {
+	display: block;
+	margin: 0 auto;
+	width: 256px;
+}
+ul {
+	list-style-type: square;
+}
