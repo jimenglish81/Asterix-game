@@ -65,7 +65,7 @@
 		canvas.width = Game.WIDTH;
 	
 		this._audio = new Audio();
-		if (Game.AUDIO) {
+		if (Game.AUDIO && false) {
 			this._audio.setAttribute("src", Game.AUDIO);
 		}
 	
