@@ -17,6 +17,50 @@ body {
 	margin: 0 auto;
 	width: 256px;
 }
-ul {
+.instructions ul {
 	list-style-type: square;
+}
+.control-btns {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+}
+.control-btns li {
+	text-align: center;
+}
+.control-btns .up {
+	width: 189px;
+	clear: both;
+	padding-bottom: 5px;
+}
+.control-btns .down {
+	padding: 0 5px;
+}
+.control-btns .left,
+.control-btns .down,
+.control-btns .right {
+	float: left;
+}
+.control-btns .punch {
+	float: right;
+}
+.control-btns button {
+	padding: 14px;
+	background: -webkit-gradient(linear, left top, left bottom, from(#FFF), to(#DDD));
+	-webkit-border-radius:6px;
+	border-radius: 6px;
+	border:#bbb 1px solid; 
+	color:#5f5e5e; 
+	display:block;
+	margin: 0 auto;
+	width: 60px;
+}
+/* iphone */
+@media only screen 
+and (min-device-width : 320px) 
+and (max-device-width : 480px) {
+	.instructions {
+		display: none;
+	}
 }

@@ -4,7 +4,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">	
 <meta charset="utf-8">
 <title>Asterix</title>
-<link rel="stylesheet" type="text/css" href="../css/styles.css">
+<link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+<link rel="stylesheet" type="text/css" href="../css/styles.css?aaaa">
 </head>
 <body>
 	<!--
@@ -38,15 +39,24 @@
 	<div id="wrapper">
 		<h1>Asterix</h1>
 		<canvas id="plot" width="256" height="223"></canvas>
-		<h2>controls</h2>
-		<ul>
-			<li>left arrow - walk left</li>
-			<li>right arrow - walk right</li>
-			<li>spacebar - punch / start</li>
-			<li>down arrow - crouch</li>
-			<li>up arrow - jump</li>
-			<li>p - pause</li>
+		<ul class="control-btns">
+			<li class="up"><button id="up">up</button></li>
+			<li class="left"><button id="left">left</button></li>
+			<li class="down"><button id="down">down</button></li>
+			<li class="right"><button id="right">right</button></li>
+			<li class="punch"><button id="fire">punch</button></li>
 		</ul>
+		<div class="instructions">
+			<h2>controls</h2>
+			<ul>
+				<li>left arrow - walk left</li>
+				<li>right arrow - walk right</li>
+				<li>spacebar - punch / start</li>
+				<li>down arrow - crouch</li>
+				<li>up arrow - jump</li>
+				<li>p - pause</li>
+			</ul>
+		</div>
 	</div>
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 	<script src="../js/util.js"></script>
@@ -62,6 +72,13 @@
 	<script src="../js/rock.js"></script>
 	<script src="../js/game.js"></script>
 	<script>
+	var uA = navigator.userAgent;
+	if((uA.match(/iPhone/i)) ||  (uA.match(/iPod/i))) {
+		setTimeout(function () {
+			window.scrollTo(0, 1);
+		}, 100);
+	}
+	
 	var asterix = new JE.Asterix();
 	var dogmatix = new JE.Dogmatix();
 	var game = new JE.Game('#plot', asterix)

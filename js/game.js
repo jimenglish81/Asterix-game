@@ -88,6 +88,23 @@
 	Game.prototype._initialiseEvents = function() {
 		jQuery(window).bind('keydown.game', this._handleKeyDown.bind(this))
 				.bind('keyup.game', this._handleKeyUp.bind(this));
+		
+		
+		// needs to be improved
+		jQuery('#right').bind('mousedown.game, touchstart', this._handleKeyDown.bind(this, {keyCode: 39}))
+						.bind('mouseup.game, touchend', this._handleKeyUp.bind(this, {keyCode: 39}));
+		
+		jQuery('#left').bind('mousedown.game, touchstart', this._handleKeyDown.bind(this, {keyCode: 37}))
+						.bind('mouseup.game, touchend', this._handleKeyUp.bind(this, {keyCode: 37}));
+		
+		jQuery('#down').bind('mousedown.game, touchstart', this._handleKeyDown.bind(this, {keyCode: 40}))
+						.bind('mouseup.game, touchend', this._handleKeyUp.bind(this, {keyCode: 40}));
+						
+		jQuery('#up').bind('mousedown.game, touchstart', this._handleKeyDown.bind(this, {keyCode: 38}))
+						.bind('mouseup.game, touchend', this._handleKeyUp.bind(this, {keyCode: 38}));
+					
+		jQuery('#fire').bind('mousedown.game, touchstart', this._handleKeyDown.bind(this, {keyCode: 32}))
+						.bind('mouseup.game, touchend', this._handleKeyUp.bind(this, {keyCode: 32}));
 	};
 
 	Game.prototype._handleKeyDown = function(jEvt) {
