@@ -89,21 +89,31 @@
 		jQuery(window).bind('keydown.game', this._handleKeyDown.bind(this))
 				.bind('keyup.game', this._handleKeyUp.bind(this));
 		
-		// needs to be improved
-		jQuery('#right').bind('mousedown.game, touchstart.game', this._handleKeyDown.bind(this, {keyCode: 39}))
-						.bind('mouseup.game, touchend.game', this._handleKeyUp.bind(this, {keyCode: 39}));
+		jQuery('.control-btns button').bind('mousedown.game, touchstart.game', this._proxyMouseEvent.bind(this))
+						.bind('mouseup.game, touchend.game', this._proxyMouseEvent.bind(this));
+	};
+	
+	Game.prototype._proxyMouseEvent = function(jEvt) {
+		var target = jEvt.target.id,
+			keyCode;
 		
-		jQuery('#left').bind('mousedown.game, touchstart.game', this._handleKeyDown.bind(this, {keyCode: 37}))
-						.bind('mouseup.game, touchend.game', this._handleKeyUp.bind(this, {keyCode: 37}));
+		if (id == 'left') {
+			keyCode = 37;
+		} else if (id == 'right') {
+			keyCode = 39;
+		} else if (id == 'up') {
+			keyCode = 38;
+		} else if (id == 'down') {
+			keyCode = 40;
+		} else {
+			keyCode = 32;
+		}
 		
-		jQuery('#down').bind('mousedown.game, touchstart.game', this._handleKeyDown.bind(this, {keyCode: 40}))
-						.bind('mouseup.game, touchend.game', this._handleKeyUp.bind(this, {keyCode: 40}));
-						
-		jQuery('#up').bind('mousedown.game, touchstart.game', this._handleKeyDown.bind(this, {keyCode: 38}))
-						.bind('mouseup.game, touchend.game', this._handleKeyUp.bind(this, {keyCode: 38}));
-					
-		jQuery('#fire').bind('mousedown.game, touchstart.game', this._handleKeyDown.bind(this, {keyCode: 32}))
-						.bind('mouseup.game, touchend.game', this._handleKeyUp.bind(this, {keyCode: 32}));
+		if (['mousedown', 'touchstart'].indexOf(event.type) !== -1) {
+			this._handleKeyDown.bind(this, {keyCode: keyCode});
+		} else {
+			this._handleKeyUp.bind(this, {keyCode: keyCode});
+		}
 	};
 
 	Game.prototype._handleKeyDown = function(jEvt) {
