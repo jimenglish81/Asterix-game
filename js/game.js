@@ -91,12 +91,11 @@
 		jQuery(window).bind('keydown.game', this._handleKeyDown.bind(this))
 				.bind('keyup.game', this._handleKeyUp.bind(this));
 		
-		jQuery('.control-btns button').bind('mousedown.game, touchstart.game', this._proxyMouseEvent.bind(this))
-						.bind('mouseup.game, touchend.game', this._proxyMouseEvent.bind(this));
+		jQuery('.control-btns button').bind('mousedown.game, touchstart.game, mouseup.game, touchend.game', this._proxyMouseEvent.bind(this));
 	};
 	
 	Game.prototype._proxyMouseEvent = function(jEvt) {
-		var id = jEvt.target.id,
+		var id = jEvt.currentTarget.id,
 			keyCode;
 		
 		if (id == 'left') {

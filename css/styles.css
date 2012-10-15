@@ -55,6 +55,44 @@ body {
 	display:block;
 	margin: 0 auto;
 	width: 60px;
+	height: 40px;
+	position: relative;
+}
+.control-btns span {
+	width: 0;
+	height: 0;
+	position: absolute;
+	left: 23px;
+}
+.control-btns .up span {
+	top: 15px;
+	border-left: 8px solid transparent;
+	border-right: 8px solid transparent;	
+	border-bottom: 8px solid #696969;
+}
+.control-btns .down span {
+	border-left: 8px solid transparent;
+	border-right: 8px solid transparent;
+	border-top: 8px solid #696969;
+}
+.control-btns .left span {
+	top: 13px;
+	border-top: 8px solid transparent;
+	border-bottom: 8px solid transparent; 
+	border-right: 8px solid #696969;
+}
+.control-btns .right span {
+	top: 13px;
+	left: 28px;
+	border-top: 8px solid transparent;
+	border-bottom: 8px solid transparent;
+	border-left: 8px solid #696969;
+}
+.control-btns .punch button {
+	background: -webkit-gradient(linear, left top, left bottom, from(#FF3333), to(#E3170D));
+	-webkit-border-radius: 20px;
+	border-radius: 20px;
+	width: 42px;
 }
 /* iphone */
 @media only screen 
