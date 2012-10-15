@@ -3,7 +3,7 @@
 	src: url('obelixpro.ttf');
 }
 body {
-	margin: 10px;
+	margin: 10px 10px 50px;
 	font-family: obelix, Lucida Console, Monaco5, monospace;
 	font-size: 13px;
 	background-color: #f8f8ff;
