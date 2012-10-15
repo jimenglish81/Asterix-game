@@ -89,22 +89,21 @@
 		jQuery(window).bind('keydown.game', this._handleKeyDown.bind(this))
 				.bind('keyup.game', this._handleKeyUp.bind(this));
 		
-		
 		// needs to be improved
-		jQuery('#right').bind('mousedown.game, touchstart', this._handleKeyDown.bind(this, {keyCode: 39}))
-						.bind('mouseup.game, touchend', this._handleKeyUp.bind(this, {keyCode: 39}));
+		jQuery('#right').bind('mousedown.game, touchstart.game', this._handleKeyDown.bind(this, {keyCode: 39}))
+						.bind('mouseup.game, touchend.game', this._handleKeyUp.bind(this, {keyCode: 39}));
 		
-		jQuery('#left').bind('mousedown.game, touchstart', this._handleKeyDown.bind(this, {keyCode: 37}))
-						.bind('mouseup.game, touchend', this._handleKeyUp.bind(this, {keyCode: 37}));
+		jQuery('#left').bind('mousedown.game, touchstart.game', this._handleKeyDown.bind(this, {keyCode: 37}))
+						.bind('mouseup.game, touchend.game', this._handleKeyUp.bind(this, {keyCode: 37}));
 		
-		jQuery('#down').bind('mousedown.game, touchstart', this._handleKeyDown.bind(this, {keyCode: 40}))
-						.bind('mouseup.game, touchend', this._handleKeyUp.bind(this, {keyCode: 40}));
+		jQuery('#down').bind('mousedown.game, touchstart.game', this._handleKeyDown.bind(this, {keyCode: 40}))
+						.bind('mouseup.game, touchend.game', this._handleKeyUp.bind(this, {keyCode: 40}));
 						
-		jQuery('#up').bind('mousedown.game, touchstart', this._handleKeyDown.bind(this, {keyCode: 38}))
-						.bind('mouseup.game, touchend', this._handleKeyUp.bind(this, {keyCode: 38}));
+		jQuery('#up').bind('mousedown.game, touchstart.game', this._handleKeyDown.bind(this, {keyCode: 38}))
+						.bind('mouseup.game, touchend.game', this._handleKeyUp.bind(this, {keyCode: 38}));
 					
-		jQuery('#fire').bind('mousedown.game, touchstart', this._handleKeyDown.bind(this, {keyCode: 32}))
-						.bind('mouseup.game, touchend', this._handleKeyUp.bind(this, {keyCode: 32}));
+		jQuery('#fire').bind('mousedown.game, touchstart.game', this._handleKeyDown.bind(this, {keyCode: 32}))
+						.bind('mouseup.game, touchend.game', this._handleKeyUp.bind(this, {keyCode: 32}));
 	};
 
 	Game.prototype._handleKeyDown = function(jEvt) {
@@ -128,7 +127,6 @@
 	        case 37: // left
 				if (!this.left) {
 					hero.incrementX(Game.CHARACTER_WIDTH);
-					this._setShadowX(Game.SHADOW_WIDTH);
 				}
 			  	this.left = true;
 				hero.stopped = false;
@@ -136,7 +134,6 @@
 	        case 39: // right
 				if (this.left) {
 					hero.incrementX(-Game.CHARACTER_WIDTH);
-					this._setShadowX(-Game.SHADOW_WIDTH);
 				}
 	          	this.left = false;
 				hero.stopped = false;
@@ -233,7 +230,7 @@
 		var valueToCheck = this.left ? this._hero.x - this._bgX : this._hero.x - this._bgX + Game.CHARACTER_WIDTH;
 		this._enemies.forEach(function(enemy, index, array) {
 			if (enemy.isHit(valueToCheck)) {
-				if (this._hero.punching) {
+				if (this._hero.punching && !this.left) {
 					enemy.dying = true;
 				} else if (!enemy.dying){
 					this._hero.dying = true;
@@ -243,31 +240,18 @@
 		}.bind(this));
 	};
 
-	Game.prototype._setShadowX = function(x) {
-		if (this._heroShadow) {
-			this._heroShadow.incrementX(x);
-		}
-	}
-
 	Game.prototype.loop = function() {
 		var hero = this._hero,
 			heroShadow = this._heroShadow,
 			bgEnd = -(this._bg.width - Game.BACKGROUND_END_OFFSET - Game.WIDTH),
-			currentFrame, shadowFrame, dirX, dirShadowX;
+			multiplyer = this.left ? -1 : 1,
+			currentFrame, shadowFrame;
 	
 		// clear
 		this._context.clearRect(0, 0, Game.WIDTH, Game.HEIGHT);
 	
 		if (!hero.stopped) {
 			hero.incrementX(this.left ? -Game.ACC : Game.ACC);
-			if (heroShadow) {
-				heroShadow.stopped = false;
-				this._setShadowX(this.left ? -Game.ACC : Game.ACC);
-			}
-		} else {
-			if (heroShadow) {
-				heroShadow.stopped = true;
-			}
 		}
 	
 		if (hero.jumping) {
@@ -299,7 +283,6 @@
 					this._bgX += Game.ACC;
 					if (this._bgX < Game.BACKGROUND_START_OFFSET) {
 						hero.incrementX(Game.ACC);
-						this._setShadowX(Game.ACC);
 					}
 				}
 			} else {
@@ -307,7 +290,6 @@
 					this._bgX -= Game.ACC;
 					if (this._bgX > bgEnd) {
 						hero.incrementX(-Game.ACC);
-						this._setShadowX(-Game.ACC);
 					}
 				}
 			}
@@ -315,7 +297,6 @@
 	
 		if(hero.dying) {
 			hero.incrementX(-1.8);
-			this._setShadowX(-1.8);
 			this._bgX += 3.6;
 		}
 	
@@ -326,7 +307,6 @@
 		hero.setX(Math.max(Math.min(hero.x, (!this.left ? Game.WIDTH - Game.CHARACTER_WIDTH : Game.WIDTH)), (!this.left ? 0 : Game.CHARACTER_WIDTH)));
 		// shadow?
 	
-	
 		// get frame
 		currentFrame = hero.getCurrentFrame();
 	
@@ -336,17 +316,15 @@
 	
 		if(this.left) {
 		  this._context.scale(-1, 1);
-		  dirX = (hero.x * -1);
-		  if (heroShadow) {
-		     dirShadowX = (heroShadow.x * -1);
-	  	  }
 		}
 	
-		this._context.drawImage(hero.img, currentFrame.x, currentFrame.y, hero.width, hero.height, dirX || hero.x, hero.y, hero.width, hero.height);
+		this._context.drawImage(hero.img, currentFrame.x, currentFrame.y, hero.width, hero.height, hero.x * multiplyer, hero.y, hero.width, hero.height);
 
 		if (heroShadow) {
+			heroShadow.setX(!this.left ? hero.x - this._heroDifference : hero.x - this._heroDifference);
+			heroShadow.stopped = hero.stopped;
 			shadowFrame = heroShadow.getCurrentFrame();
-			this._context.drawImage(heroShadow.img, shadowFrame.x, shadowFrame.y, heroShadow.width, heroShadow.height, dirShadowX || heroShadow.x, heroShadow.y, heroShadow.width, heroShadow.height);
+			this._context.drawImage(heroShadow.img, shadowFrame.x, shadowFrame.y, heroShadow.width, heroShadow.height, heroShadow.x * multiplyer, heroShadow.y, heroShadow.width, heroShadow.height);
 		}
 	
 		this._context.restore();
