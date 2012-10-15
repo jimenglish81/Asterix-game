@@ -112,9 +112,9 @@
 		}
 		
 		if (['mousedown', 'touchstart'].indexOf(event.type) !== -1) {
-			this._handleKeyDown.bind(this)({keyCode: keyCode});
+			return this._handleKeyDown.bind(this)({keyCode: keyCode});
 		} else {
-			this._handleKeyUp.bind(this)({keyCode: keyCode});
+			return this._handleKeyUp.bind(this)({keyCode: keyCode});
 		}
 	};
 
