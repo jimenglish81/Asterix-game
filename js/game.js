@@ -17,6 +17,8 @@
 	Game.prototype._enemies = null;
 
 	Game.prototype._heroShadow = null;
+	
+	Game.prototype._heroDifference = null;
 
 	Game.prototype.started = false;
 
