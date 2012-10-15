@@ -96,7 +96,7 @@
 	};
 	
 	Game.prototype._proxyMouseEvent = function(jEvt) {
-		var target = jEvt.target.id,
+		var id = jEvt.target.id,
 			keyCode;
 		
 		if (id == 'left') {
@@ -112,9 +112,9 @@
 		}
 		
 		if (['mousedown', 'touchstart'].indexOf(event.type) !== -1) {
-			this._handleKeyDown.bind(this, {keyCode: keyCode});
+			this._handleKeyDown.bind(this)({keyCode: keyCode});
 		} else {
-			this._handleKeyUp.bind(this, {keyCode: keyCode});
+			this._handleKeyUp.bind(this)({keyCode: keyCode});
 		}
 	};
 
